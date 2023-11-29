@@ -3,3 +3,30 @@
     padding: 0;
     margin: 0;
 }
+
+.header-flex {
+    display: flex;
+    justify-content: center;
+}
+
+.board-container-grid {
+    width: 390px;
+    height: 390px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    background-color: red;
+    place-items: center;
+    margin: auto;
+}
+
+.board-container-grid > div {
+    width: 110px;
+    height: 110px;
+    background-color: green;
+}
+
+.board-container-grid > div:hover {
+    background-color: brown;
+    cursor: pointer;
+}

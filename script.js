@@ -26,17 +26,19 @@ const gameModule = (function() {
     let loserArrs = [];
 
     const determineWinner = function(obj) {
+        // One of the players has won the round
+        winRound(obj);
+        //Stalemate round
+        stalemateRound(loserArrs);
         // One of the players has won the game
-        win(obj);
-        //Stalemate
-        stalemate(loserArrs);
+        winGame(obj);
     };
 
-    function win(obj) {
+    function winRound(obj) {
         let isWinner = false;
         winningArr.forEach((member) => {
             if (member.every((val, index) => val === obj.choices[index])) { 
-                console.log(`${obj.name} has won!`); 
+                console.log(`${obj.name} has won the round!`); 
                 obj.points += 1;
                 obj.choices = [];
                 isWinner = true;
@@ -54,82 +56,19 @@ const gameModule = (function() {
         console.log(loserArrs);
     };
 
-    function stalemate(loserArrs) {
+    function stalemateRound(loserArrs) {
         if (loserArrs.length == 2) {
-            console.log("Stalemate!");
+            console.log("Round ended in stalemate!");
             loserArrs = [];
         }
     };
+
+    function winGame(obj) {
+        if(obj.points == 5) { console.log(`${obj.name} has won the game!`)};
+    }
 
     return { determineWinner }
 })();
 
 let playerFirst = player("John", "O");
 let playerSecond = player("Jane", "X");
-
-
-playerFirst.play(1);
-playerSecond.play(4);
-playerFirst.play(2);
-
-playerSecond.play(5);
-playerFirst.play(3);
-playerSecond.play(6);
-
-playerFirst.play(1);
-playerSecond.play(6);
-playerFirst.play(7);
-
-playerSecond.play(3);
-playerFirst.play(6);
-playerSecond.play(4);
-
-playerFirst.play(1);
-playerSecond.play(4);
-playerFirst.play(2);
-
-playerSecond.play(5);
-playerFirst.play(3);
-playerSecond.play(6);
-
-playerFirst.play(1);
-playerSecond.play(6);
-playerFirst.play(7);
-
-playerSecond.play(3);
-playerFirst.play(6);
-playerSecond.play(4);
-
-playerFirst.play(1);
-playerSecond.play(4);
-playerFirst.play(2);
-
-playerSecond.play(5);
-playerFirst.play(3);
-playerSecond.play(6);
-
-playerFirst.play(1);
-playerSecond.play(6);
-playerFirst.play(7);
-
-playerSecond.play(3);
-playerFirst.play(6);
-playerSecond.play(4);
-
-playerFirst.play(1);
-playerSecond.play(4);
-playerFirst.play(2);
-
-playerSecond.play(5);
-playerFirst.play(3);
-playerSecond.play(6);
-
-playerFirst.play(1);
-playerSecond.play(6);
-playerFirst.play(7);
-
-playerSecond.play(3);
-playerFirst.play(6);
-playerSecond.play(4);
-
-console.log(playerFirst.points, playerSecond.points);

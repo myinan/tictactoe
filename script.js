@@ -13,22 +13,23 @@ function player(name, mark) {
         mark,
         choices: [],
         points: 0,
-    }
-    return Object.assign(obj, prototype);
+        play: function(num) {
+              this.choices.push(num);
+              if (this.choices.length === 3) {gameModule.determineWinner(this.choices)};
+        },
+    };
+    return obj;
 };
 
-const prototype = (function() {  
-    const play = function(num) {
-            this.choices.push(num);
-            game.determineWinner(this.choices);
-    }
-    return { play };
-})();
-
-const game = (function() {
+const gameModule = (function() {
+    const winArr = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
     const determineWinner = function(arr) {
-        if (arr.length < 3) return;
-        console.log(gameBoard.arr[0], arr);
+        winArr.forEach((member) => {
+            if (member.every((val, index) => val === arr[index])) {
+                console.log("You've won!");
+                return;
+            }
+        });        
     }
     return { determineWinner }
 })();
@@ -37,6 +38,6 @@ let playerFirst = player("John", "O");
 let playerSecond = player("Jane", "X");
 
 
-playerFirst.play(3);
-playerFirst.play(3);
+playerFirst.play(1);
+playerFirst.play(2);
 playerFirst.play(3);

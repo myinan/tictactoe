@@ -29,10 +29,8 @@ const gameModule = (function() {
         let isWinner = false;
         let sortedChoices = obj.choices.slice().sort(); // Sort player choices
         winningArr.forEach((member) => {
-            if (member.every((val, index) =>  val == sortedChoices[index])) { 
+            if (member.every((val) =>  sortedChoices.includes(val))) { 
                 console.log(`${obj.name} has won the round!`); 
-                obj.points += 1;
-                obj.choices = [];
                 isWinner = true;
                 loserArrs = [];
             }
@@ -43,8 +41,7 @@ const gameModule = (function() {
     };
 
     function getLosers(obj) {
-        loserArrs.push(obj.choices);
-        obj.choices = [];
+        //
     };
 
     function stalemateRound() {

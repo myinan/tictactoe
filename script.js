@@ -17,7 +17,7 @@ const gameModule = (function() {
     let loserArrs = [];
 
     const determineWinner = function(obj) {
-        // One of the players has won the round
+        // One of the players has won a round
         winRound(obj);
         //Stalemate round
         stalemateRound(loserArrs);
@@ -27,8 +27,9 @@ const gameModule = (function() {
 
     function winRound(obj) {
         let isWinner = false;
-        winningArr.some((member) => {
-            if (member.every((val) => val == obj.choices.includes(val))) { 
+        let sortedChoices = obj.choices.slice().sort(); // Sort player choices
+        winningArr.forEach((member) => {
+            if (member.every((val, index) =>  val == sortedChoices[index])) { 
                 console.log(`${obj.name} has won the round!`); 
                 obj.points += 1;
                 obj.choices = [];
@@ -46,7 +47,7 @@ const gameModule = (function() {
         obj.choices = [];
     };
 
-    function stalemateRound(loserArrs) {
+    function stalemateRound() {
         if (loserArrs.length == 2) {
             console.log("Round ended in stalemate!");
             loserArrs = [];
@@ -90,13 +91,15 @@ const domAccessModule = (function() {
 
     function handleGameBoardClick(event) {
         if (roundCount % 2 == 1 && (event.target.getAttribute("data-value"))) {
-            playersArr[0].play(event.target.getAttribute("data-value"));
+            playersArr[0].play(+event.target.getAttribute("data-value"));
             roundCount++;
+            console.table(playersArr[0].name, playersArr[0].choices);
             return;
         }
         else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
-            playersArr[1].play(event.target.getAttribute("data-value"));
+            playersArr[1].play(+event.target.getAttribute("data-value"));
             roundCount++;
+            console.table(playersArr[1].name, playersArr[1].choices);
             return;
         }
     }

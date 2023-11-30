@@ -1,14 +1,5 @@
-const gameBoard = (function() {
-    const arr = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ];
-    return { arr }
-})();
-
 function player(name, mark) {
-    obj = {
+    let obj = {
         name,
         mark,
         choices: [],
@@ -53,7 +44,6 @@ const gameModule = (function() {
     function getLosers(obj) {
         loserArrs.push(obj.choices);
         obj.choices = [];
-        console.log(loserArrs);
     };
 
     function stalemateRound(loserArrs) {
@@ -70,5 +60,45 @@ const gameModule = (function() {
     return { determineWinner }
 })();
 
-let playerFirst = player("John", "O");
-let playerSecond = player("Jane", "X");
+/* const domAccessModule = (function() {
+    //Store DOM nodes
+    const containerBoard = document.getElementById("board-container");
+
+
+    containerBoard.addEventListener("click", handlerFunction);
+
+    function handlerFunction(event) {
+        john.play(event.target.getAttribute("value"));
+        console.log(john.choices);
+    }
+})(); */
+
+let john = player("John", "O");
+let jane = player("Jane", "X");
+
+john.play(1);
+jane.play(2);
+
+john.play(5);
+jane.play(3);
+
+john.play(9);
+jane.play(4);
+
+john.play(1);
+jane.play(2);
+
+john.play(5);
+jane.play(3);
+
+john.play(9);
+jane.play(4);
+
+john.play(1);
+jane.play(2);
+
+john.play(5);
+jane.play(3);
+
+john.play(9);
+jane.play(4);

@@ -6,7 +6,7 @@ function player(name, mark) {
         points: 0,
         play: function(num) {
               this.choices.push(num);
-              if (this.choices.length == 3) {gameModule.determineWinner(this)};
+              if (this.choices.length >= 3) {gameModule.determineWinner(this)};
         },
     };
     return obj;
@@ -27,8 +27,8 @@ const gameModule = (function() {
 
     function winRound(obj) {
         let isWinner = false;
-        winningArr.forEach((member) => {
-            if (member.every((val, index) => val == obj.choices[index])) { 
+        winningArr.some((member) => {
+            if (member.every((val) => val == obj.choices.includes(val))) { 
                 console.log(`${obj.name} has won the round!`); 
                 obj.points += 1;
                 obj.choices = [];
@@ -92,19 +92,11 @@ const domAccessModule = (function() {
         if (roundCount % 2 == 1 && (event.target.getAttribute("data-value"))) {
             playersArr[0].play(event.target.getAttribute("data-value"));
             roundCount++;
-
-            console.log(roundCount);
-            console.log(playersArr[0]);
-
             return;
         }
         else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
             playersArr[1].play(event.target.getAttribute("data-value"));
             roundCount++;
-
-            console.log(roundCount);
-            console.log(playersArr[1]);
-
             return;
         }
     }

@@ -6,7 +6,7 @@ function player(name, mark) {
         points: 0,
         play: function(num) {
               this.choices.push(num);
-              if (this.choices.length === 3) {gameModule.determineWinner(this)};
+              if (this.choices.length == 3) {gameModule.determineWinner(this)};
         },
     };
     return obj;
@@ -28,7 +28,7 @@ const gameModule = (function() {
     function winRound(obj) {
         let isWinner = false;
         winningArr.forEach((member) => {
-            if (member.every((val, index) => val === obj.choices[index])) { 
+            if (member.every((val, index) => val == obj.choices[index])) { 
                 console.log(`${obj.name} has won the round!`); 
                 obj.points += 1;
                 obj.choices = [];
@@ -60,45 +60,52 @@ const gameModule = (function() {
     return { determineWinner }
 })();
 
-/* const domAccessModule = (function() {
+const domAccessModule = (function() {
+    let playersArr = [];
+    let roundCount = 1;
+
     //Store DOM nodes
+    const dialog = document.getElementById("dialog");
     const containerBoard = document.getElementById("board-container");
+    const firstPlayerName = document.getElementById("name1");
+    const secondPlayerName = document.getElementById("name2");
+    
+    document.addEventListener("DOMContentLoaded", () => dialog.showModal());
+    dialog.addEventListener("click", handleDialog);
+    containerBoard.addEventListener("click", handleGameBoardClick);
 
+    function handleDialog(event) {
+        if (event.target.id == "confirmBtn") {
+            event.preventDefault();
 
-    containerBoard.addEventListener("click", handlerFunction);
+            //Create player objects
+            let playerFirst = player(firstPlayerName.value, "X");
+            let playerSecond = player(secondPlayerName.value, "O");
 
-    function handlerFunction(event) {
-        john.play(event.target.getAttribute("value"));
-        console.log(john.choices);
+            playersArr.push(playerFirst, playerSecond);
+            dialog.close();     
+        }
+        else if (event.target.id == "cancelBtn") { dialog.close() };
     }
-})(); */
 
-let john = player("John", "O");
-let jane = player("Jane", "X");
+    function handleGameBoardClick(event) {
+        if (roundCount % 2 == 1 && (event.target.getAttribute("data-value"))) {
+            playersArr[0].play(event.target.getAttribute("data-value"));
+            roundCount++;
 
-john.play(1);
-jane.play(2);
+            console.log(roundCount);
+            console.log(playersArr[0]);
 
-john.play(5);
-jane.play(3);
+            return;
+        }
+        else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
+            playersArr[1].play(event.target.getAttribute("data-value"));
+            roundCount++;
 
-john.play(9);
-jane.play(4);
+            console.log(roundCount);
+            console.log(playersArr[1]);
 
-john.play(1);
-jane.play(2);
-
-john.play(5);
-jane.play(3);
-
-john.play(9);
-jane.play(4);
-
-john.play(1);
-jane.play(2);
-
-john.play(5);
-jane.play(3);
-
-john.play(9);
-jane.play(4);
+            return;
+        }
+    }
+})();

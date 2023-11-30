@@ -13,15 +13,40 @@
     </div>
     
     <div class="board-container-grid" id="board-container">
-        <div id="div-1" value="1"></div>
-        <div id="div-2" value="2"></div>
-        <div id="div-3" value="3"></div>
-        <div id="div-4" value="4"></div>
-        <div id="div-5" value="5"></div>
-        <div id="div-6" value="6"></div>
-        <div id="div-7" value="7"></div>
-        <div id="div-8" value="8"></div>
-        <div id="div-9" value="9"></div>
+        <div id="div-1" data-value="1"></div>
+        <div id="div-2" data-value="2"></div>
+        <div id="div-3" data-value="3"></div>
+        <div id="div-4" data-value="4"></div>
+        <div id="div-5" data-value="5"></div>
+        <div id="div-6" data-value="6"></div>
+        <div id="div-7" data-value="7"></div>
+        <div id="div-8" data-value="8"></div>
+        <div id="div-9" data-value="9"></div>
     </div>
+
+    <dialog id="dialog">
+        <h2>Welcome to TicTacToe!</h2>
+        <p>Enter your name and click "confirm" to start the game.</p>
+        <form method="dialog">
+            <fieldset>
+                <legend>Player 1 (Goes first)</legend>
+
+                <label for="name1">Name:</label>
+                <input type="text" id="name1" name="name1">
+            </fieldset>
+
+            <fieldset>
+                <legend>Player 2</legend>
+
+                <label for="name2">Name:</label>
+                <input type="text" id="name2" name="name2">
+            </fieldset>
+
+            <div>
+                <button type="button" id="cancelBtn">Cancel</button>
+                <button type="submit" id="confirmBtn">Confirm</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>

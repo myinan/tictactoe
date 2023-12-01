@@ -72,7 +72,7 @@ const domAccessModule = (function() {
             let playerSecond = player(secondPlayerName.value, "O");
 
             playersArr.push(playerFirst, playerSecond);
-            dialog.close();     
+            dialog.close();
         }
         else if (event.target.id == "cancelBtn") { dialog.close() };
     }

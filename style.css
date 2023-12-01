@@ -13,6 +13,7 @@
     --hover-color: #E74C3C;   /* Red for hover effects */
     
     background-color: var(--primary-bg);
+    color: var(--text-color);
 }
 
 ::backdrop {
@@ -47,11 +48,52 @@
 }
 
 dialog {
+    /* display: flex;
+    flex-direction: column; */
+    gap: 10px;
+    padding: 10px 10px 0px 10px;
+    height: 400px;
+    width: 800px;
     background-color: var(--secondary-bg);
     margin: auto;
+    color: var(--text-color);
+}
+
+dialog h2 {
+    font-size: 3rem;
+}
+
+dialog p {
+    font-size: 1.5rem;
 }
 
 ::backdrop {
     background-color: var(--backdrop-bg);
     opacity: 1;
+}
+
+form {
+    /* display: grid; */
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+form fieldset {
+    font-size: 2rem;
+}
+
+form input {
+    padding: 3px;
+    color: inherit;
+    font-size: 1.5rem;
+    width: 250px;
+}
+
+form p {
+    font-size: inherit;
+}
+
+form p span {
+    font-size: 3rem;
 }

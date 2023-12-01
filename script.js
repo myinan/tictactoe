@@ -27,17 +27,17 @@ const gameModule = (function() {
     function winRound(obj) {
         winningArr.forEach((member) => {
             if (member.every((val) =>  obj.choices.includes(val))) {
-                domAccessModule.result.gameResult = "winRound";
+                domAccessModule.updateResult("winRound")
             }
         });
     };
 
     function stalemateRound(obj) {
-        if(obj.choices.length == 5) { domAccessModule.result = "stalemateRound"; }
+        if(obj.choices.length == 5) { domAccessModule.updateResult("stalemateRound"); }
     };
 
     function winGame(obj) {
-        if(obj.points == 5) { domAccessModule.result = "winGame"; };
+        if(obj.points == 5) { domAccessModule.updateResult("winGame"); };
     }
 
     return { determineWinner }
@@ -46,9 +46,7 @@ const gameModule = (function() {
 const domAccessModule = (function() {
     let playersArr = [];
     let roundCount = 1;
-    let result = {
-        gameResult: null
-    };
+    let result;
 
     //Store DOM nodes
     const dialog = document.getElementById("dialog");
@@ -80,39 +78,42 @@ const domAccessModule = (function() {
             roundCount++;
 
             checkGameResult(playersArr[0], result);
-
-            console.table(playersArr[0].name, playersArr[0].choices);
-            console.log(result);
             return;
         }
         else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
             playersArr[1].play(+event.target.getAttribute("data-value"));
             roundCount++;
 
-            checkGameResult();
-
-
-            console.table(playersArr[1].name, playersArr[1].choices);
-            console.log(result);
+            checkGameResult(playersArr[1], result);
             return;
         }
     }
 
     function checkGameResult(obj, res) {
-        if (res.gameResult == "winRound") {
+        if (res == "winRound") {
             console.log(`${obj.name} has won the round!`);
-                obj.points++;
-                playersArr.forEach((player) => {
-                    player.choices = [];
-                });   
+            result = "";
+            roundCount = 1;
+            obj.points++;
+            playersArr.forEach((player) => {
+                player.choices = [];
+            });   
         }
-        else if (res.gameResult == "stalemateRound") {
+        else if (res == "stalemateRound") {
             console.log("STALEMATE");
+            result = "";
+            roundCount = 1;
         }
-        else if (res.gameResult == "winGame") {
-            console.log(`${obj.name} has won the game!`)
+        else if (res == "winGame") {
+            console.log(`${obj.name} has won the game!`);
+            result = "";
+            roundCount = 1;
         }
     }
 
-    return result 
+    function updateResult(newResult) {
+        result = newResult;
+    }
+
+    return { updateResult } 
 })();

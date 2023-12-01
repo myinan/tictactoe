@@ -14,48 +14,43 @@ function player(name, mark) {
 
 const gameModule = (function() {
     const winningArr = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
-    let loserArrs = [];
+    let isWinner = false;
+    let result;
 
     const determineWinner = function(obj) {
         // One of the players has won a round
         winRound(obj);
         //Stalemate round
-        stalemateRound(loserArrs);
+        stalemateRound();
         // One of the players has won the game
         winGame(obj);
     };
 
     function winRound(obj) {
-        let isWinner = false;
-        let sortedChoices = obj.choices.slice().sort(); // Sort player choices
         winningArr.forEach((member) => {
-            if (member.every((val) =>  sortedChoices.includes(val))) { 
+            if (member.every((val) =>  obj.choices.includes(val))) { 
                 console.log(`${obj.name} has won the round!`); 
                 isWinner = true;
-                loserArrs = [];
+
+                obj.points++;
+                domAccessModule.roundCount = 1;
+                domAccessModule.playersArr.forEach((player) => {
+                    player.choices = [];
+                });   
             }
         });
-        if(!isWinner) {
-            getLosers(obj);
-        }
-    };
-
-    function getLosers(obj) {
-        //
     };
 
     function stalemateRound() {
-        if (loserArrs.length == 2) {
-            console.log("Round ended in stalemate!");
-            loserArrs = [];
-        }
+         //
+         console.log("STALEMATE");
     };
 
     function winGame(obj) {
         if(obj.points == 5) { console.log(`${obj.name} has won the game!`)};
     }
 
-    return { determineWinner }
+    return { determineWinner, result }
 })();
 
 const domAccessModule = (function() {
@@ -100,4 +95,5 @@ const domAccessModule = (function() {
             return;
         }
     }
+    return { playersArr, roundCount }
 })();

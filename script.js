@@ -14,6 +14,7 @@ function player(name, mark) {
 
 const gameModule = (function() {
     const winningArr = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
+    let isWinner;
 
     const determineWinner = function(object) {
         // One of the players has won a round
@@ -25,15 +26,19 @@ const gameModule = (function() {
     };
 
     function winRound(obj) {
-        winningArr.forEach((member) => {
+        winningArr.some((member) => {
             if (member.every((val) =>  obj.choices.includes(val))) {
-                domAccessModule.updateResult("winRound")
+                domAccessModule.updateResult("winRound");
+                isWinner = true;
             }
         });
     };
 
     function stalemateRound(obj) {
-        if(obj.choices.length == 5) { domAccessModule.updateResult("stalemateRound"); }
+        if(obj.choices.length == 5 && isWinner == false) { 
+            domAccessModule.updateResult("stalemateRound");
+        }
+        isWinner = false;
     };
 
     function winGame(obj) {
@@ -76,14 +81,12 @@ const domAccessModule = (function() {
         if (roundCount % 2 == 1 && (event.target.getAttribute("data-value"))) {
             playersArr[0].play(+event.target.getAttribute("data-value"));
             roundCount++;
-
             checkGameResult(playersArr[0], result);
             return;
         }
         else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
             playersArr[1].play(+event.target.getAttribute("data-value"));
             roundCount++;
-
             checkGameResult(playersArr[1], result);
             return;
         }

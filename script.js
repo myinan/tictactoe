@@ -18,14 +18,14 @@ const gameModule = (function() {
 
     const determineWinner = function(object) {
         // One of the players has won a round
-        winRound(object);
+        _winRound(object);
         //Stalemate round
-        stalemateRound(object);
+        _stalemateRound(object);
         // One of the players has won the game
-        winGame(object);
+        _winGame(object);
     };
 
-    function winRound(obj) {
+    function _winRound(obj) {
         winningArr.some((member) => {
             if (member.every((val) =>  obj.choices.includes(val))) {
                 domAccessModule.updateResult("winRound");
@@ -34,14 +34,14 @@ const gameModule = (function() {
         });
     };
 
-    function stalemateRound(obj) {
+    function _stalemateRound(obj) {
         if(obj.choices.length == 5 && isWinner == false) { 
             domAccessModule.updateResult("stalemateRound");
         }
         isWinner = false;
     };
 
-    function winGame(obj) {
+    function _winGame(obj) {
         if(obj.points == 5) { domAccessModule.updateResult("winGame"); };
     }
 
@@ -60,10 +60,10 @@ const domAccessModule = (function() {
     const secondPlayerName = document.getElementById("name2");
     
     document.addEventListener("DOMContentLoaded", () => dialog.showModal());
-    dialog.addEventListener("click", handleDialog);
-    containerBoard.addEventListener("click", handleGameBoardClick);
+    dialog.addEventListener("click", _handleDialog);
+    containerBoard.addEventListener("click", _playGame);
 
-    function handleDialog(event) {
+    function _handleDialog(event) {
         if (event.target.id == "confirmBtn") {
             event.preventDefault();
 
@@ -77,22 +77,24 @@ const domAccessModule = (function() {
         else if (event.target.id == "cancelBtn") { dialog.close() };
     }
 
-    function handleGameBoardClick(event) {
-        if (roundCount % 2 == 1 && (event.target.getAttribute("data-value"))) {
-            playersArr[0].play(+event.target.getAttribute("data-value"));
+    function _playGame(event) {
+        let chosenNumber = event.target.getAttribute("data-value");
+
+        if (roundCount % 2 == 1 && chosenNumber) {
+            playersArr[0].play(+chosenNumber);
             roundCount++;
-            checkGameResult(playersArr[0], result);
+            _checkGameResult(playersArr[0], result);
             return;
         }
-        else if (roundCount % 2 == 0 && (event.target.getAttribute("data-value"))) {
-            playersArr[1].play(+event.target.getAttribute("data-value"));
+        else if (roundCount % 2 == 0 && chosenNumber) {
+            playersArr[1].play(+chosenNumber);
             roundCount++;
-            checkGameResult(playersArr[1], result);
+            _checkGameResult(playersArr[1], result);
             return;
         }
     }
 
-    function checkGameResult(obj, res) {
+    function _checkGameResult(obj, res) {
         if (res == "winRound") {
             console.log(`${obj.name} has won the round!`);
             result = "";
@@ -112,6 +114,10 @@ const domAccessModule = (function() {
             result = "";
             roundCount = 1;
         }
+    }
+
+    function _render(obj) {
+
     }
 
     function updateResult(newResult) {

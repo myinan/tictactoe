@@ -58,6 +58,17 @@ const domAccessModule = (function() {
     const containerBoard = document.getElementById("board-container");
     const firstPlayerName = document.getElementById("name1");
     const secondPlayerName = document.getElementById("name2");
+
+    const statusFirstName = document.getElementById("first-player-name");
+    const statusFirstScore = document.getElementById("first-player-score");
+    const statusFirstMark = document.getElementById("first-player-mark");
+
+    const statusSecondName = document.getElementById("second-player-name");
+    const statusSecondScore = document.getElementById("second-player-score");
+    const statusSecondMark = document.getElementById("second-player-mark");
+
+    const displayRoundWin = document.getElementById("display-round-winner");
+    const displayGameWin = document.getElementById("display-game-winner");
     
     document.addEventListener("DOMContentLoaded", () => dialog.showModal());
     dialog.addEventListener("click", _handleDialog);
@@ -77,6 +88,7 @@ const domAccessModule = (function() {
             let playerSecond = player(secondPlayerName.value, "O");
 
             playersArr.push(playerFirst, playerSecond);
+            _renderPlayersInfo();
             dialog.close();
         }
         else if (event.target.id == "cancelBtn") { window.location.reload() };
@@ -101,29 +113,41 @@ const domAccessModule = (function() {
 
     function _checkGameResult(obj, res) {
         if (res == "winRound") {
-            console.log(`${obj.name} has won the round!`);
             result = "";
             roundCount = 1;
             obj.points++;
             playersArr.forEach((player) => {
                 player.choices = [];
-            });   
+            });
+            
+            displayRoundWin.innerText = `${obj.name} has won the round!`;
+            _renderPlayersInfo();
         }
         else if (res == "stalemateRound") {
-            console.log("STALEMATE");
             result = "";
             roundCount = 1;
+
+            displayRoundWin.innerText = `Round ended in stalemate.`;
+            _renderPlayersInfo();
         }
         else if (res == "winGame") {
-            console.log(`${obj.name} has won the game!`);
             result = "";
             roundCount = 1;
+
+            displayGameWin.innerText = `${obj.name} has won the game!`;
+            _renderPlayersInfo();
         }
     }
 
-    function _render(obj) {
+    function _renderPlayersInfo() {
+        statusFirstName.innerText = `${playersArr[0].name}`;
+        statusFirstScore.innerText = `Score: ${playersArr[0].points}`;
+        statusFirstMark.innerText = `Mark: ${playersArr[0].mark}`;
 
-    }
+        statusSecondName.innerText = `${playersArr[1].name}`;
+        statusSecondScore.innerText = `Score: ${playersArr[1].points}`;
+        statusSecondMark.innerText = `Mark: ${playersArr[1].mark}`;
+    };
 
     function updateResult(newResult) {
         result = newResult;

@@ -64,6 +64,11 @@ const domAccessModule = (function() {
     containerBoard.addEventListener("click", _playGame);
 
     function _handleDialog(event) {
+        if ( event.target.id == "confirmBtn" && (firstPlayerName.value == "" || secondPlayerName.value == "")) {
+            event.preventDefault();
+            alert("Please provide names");
+            return;
+        }
         if (event.target.id == "confirmBtn") {
             event.preventDefault();
 
@@ -74,7 +79,7 @@ const domAccessModule = (function() {
             playersArr.push(playerFirst, playerSecond);
             dialog.close();
         }
-        else if (event.target.id == "cancelBtn") { dialog.close() };
+        else if (event.target.id == "cancelBtn") { window.location.reload() };
     }
 
     function _playGame(event) {

@@ -21,8 +21,6 @@ const gameModule = (function() {
         _winRound(object);
         //Stalemate round
         _stalemateRound(object);
-        // One of the players has won the game
-        _winGame(object);
     };
 
     function _winRound(obj) {
@@ -40,10 +38,6 @@ const gameModule = (function() {
         }
         isWinner = false;
     };
-
-    function _winGame(obj) {
-        if(obj.points == 5) { domAccessModule.updateResult("winGame"); };
-    }
 
     return { determineWinner }
 })();
@@ -67,8 +61,7 @@ const domAccessModule = (function() {
     const statusSecondScore = document.getElementById("second-player-score");
     const statusSecondMark = document.getElementById("second-player-mark");
 
-    const displayRoundWin = document.getElementById("display-round-winner");
-    const displayGameWin = document.getElementById("display-game-winner");
+    const displayWinner = document.getElementById("display-winner");
     
     document.addEventListener("DOMContentLoaded", () => dialog.showModal());
     dialog.addEventListener("click", _handleDialog);
@@ -113,28 +106,18 @@ const domAccessModule = (function() {
 
     function _checkGameResult(obj, res) {
         if (res == "winRound") {
-            result = "";
-            roundCount = 1;
+            _reset();
+
             obj.points++;
-            playersArr.forEach((player) => {
-                player.choices = [];
-            });
-            
-            displayRoundWin.innerText = `${obj.name} has won the round!`;
+            if (obj.points < 5) { displayWinner.innerText = `${obj.name} has won the round!`; }
+            else if (obj.points == 5) { 
+                displayWinner.innerText = `${obj.name} has won the game!`;
+            };
             _renderPlayersInfo();
         }
         else if (res == "stalemateRound") {
-            result = "";
-            roundCount = 1;
-
-            displayRoundWin.innerText = `Round ended in stalemate.`;
-            _renderPlayersInfo();
-        }
-        else if (res == "winGame") {
-            result = "";
-            roundCount = 1;
-
-            displayGameWin.innerText = `${obj.name} has won the game!`;
+            _reset();
+            displayWinner.innerText = `Round ended in stalemate.`;
             _renderPlayersInfo();
         }
     }
@@ -148,6 +131,14 @@ const domAccessModule = (function() {
         statusSecondScore.innerText = `Score: ${playersArr[1].points}`;
         statusSecondMark.innerText = `Mark: ${playersArr[1].mark}`;
     };
+
+    function _reset() {
+        result = "";
+        roundCount = 1;
+        playersArr.forEach((player) => {
+            player.choices = [];
+        });
+    }
 
     function updateResult(newResult) {
         result = newResult;

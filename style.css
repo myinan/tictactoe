@@ -38,6 +38,7 @@
 
 #display-winner {
     min-height: 50px;
+    font-weight: bold;
 }
 
 .main-container {
@@ -56,6 +57,10 @@
 #first-player-name,
 #second-player-name {
     font-size: 2.5rem;
+}
+
+.unclickable {
+    pointer-events: none;
 }
 
 .board-container-grid {

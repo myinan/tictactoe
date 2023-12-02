@@ -26,7 +26,8 @@ const gameModule = (function() {
     function _winRound(obj) {
         winningArr.some((member) => {
             if (member.every((val) =>  obj.choices.includes(val))) {
-                domAccessModule.updateResult("winRound");
+                winnerArray = member;
+                domAccessModule.updateResult("winRound", winnerArray);
                 isWinner = true;
             }
         });
@@ -46,6 +47,7 @@ const domAccessModule = (function() {
     let playersArr = [];
     let roundCount = 1;
     let result;
+    let winnerArray;
 
     //Store DOM nodes
     const dialog = document.getElementById("dialog");
@@ -62,6 +64,7 @@ const domAccessModule = (function() {
     const statusSecondMark = document.getElementById("second-player-mark");
 
     const displayWinner = document.getElementById("display-winner");
+    let boxes = document.querySelectorAll('#board-container > div');
 
     document.addEventListener("DOMContentLoaded", () => dialog.showModal());
     dialog.addEventListener("click", _handleDialog);
@@ -92,18 +95,22 @@ const domAccessModule = (function() {
 
         if (roundCount % 2 == 1 && chosenNumber) {
             playersArr[0].play(+chosenNumber);
+            roundCount++;
+
+            event.target.classList.add("unclickable");
             event.target.innerText = `${playersArr[0].mark}`;
             event.target.style.backgroundColor = "#85ceff";
-            roundCount++;
 
             _checkGameResult(playersArr[0], result);
             return;
         }
         else if (roundCount % 2 == 0 && chosenNumber) {
             playersArr[1].play(+chosenNumber);
+            roundCount++;
+
+            event.target.classList.add("unclickable");
             event.target.innerText = `${playersArr[1].mark}`;
             event.target.style.backgroundColor = "#85ceff";
-            roundCount++;
 
             _checkGameResult(playersArr[1], result);
             return;
@@ -112,21 +119,36 @@ const domAccessModule = (function() {
 
     function _checkGameResult(obj, res) {
         if (res == "winRound") {
+            // Set the background color of winning numbers to green
+            obj.choices.forEach((choice) => {
+                boxes.forEach((box) => {
+                    if (choice == box.getAttribute("data-value") && winnerArray.includes(choice)) {
+                        box.style.backgroundColor = "green";
+                    }
+                })
+            })
+
             _resetResRoundChoices();
 
             obj.points++;
             if (obj.points < 5) { 
-                displayWinner.innerText = `${obj.name} has won the round!`; 
+                displayWinner.innerText = `${obj.name} has won the round!`;
+                _renderPlayersInfo();
+                containerBoard.classList.add("unclickable"); // Set the board unclickable
+                setTimeout(_resetBoxes, 1000); // _resetBoxes reverts back to clickable 
             }
-            else if (obj.points == 5) { 
+            else if (obj.points == 5) {
+                _renderPlayersInfo();
                 displayWinner.innerText = `${obj.name} has won the game!`;
+                containerBoard.classList.add("unclickable");
             };
-            _renderPlayersInfo();
         }
         else if (res == "stalemateRound") {
             _resetResRoundChoices();
             displayWinner.innerText = `Round ended in stalemate.`;
             _renderPlayersInfo();
+            containerBoard.classList.add("unclickable");
+            setTimeout(_resetBoxes, 1000);
         }
     }
 
@@ -146,10 +168,22 @@ const domAccessModule = (function() {
         statusSecondName.innerText = `${playersArr[1].name}`;
         statusSecondScore.innerText = `Score: ${playersArr[1].points}`;
         statusSecondMark.innerText = `Mark: ${playersArr[1].mark}`;
-    };
+    }
 
-    function updateResult(newResult) {
+    function _resetBoxes() {
+             // boxes = document.querySelectorAll('#board-container > div');
+                boxes.forEach(function(box) {
+                box.innerText = "";
+                box.style.backgroundColor = "#2c85c0";
+                box.classList.remove("unclickable");
+                });
+
+        containerBoard.classList.remove("unclickable");
+    }
+
+    function updateResult(newResult, winnerArr) {
         result = newResult;
+        winnerArray = winnerArr;
     }
 
     return { updateResult } 

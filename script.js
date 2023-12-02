@@ -62,7 +62,7 @@ const domAccessModule = (function() {
     const statusSecondMark = document.getElementById("second-player-mark");
 
     const displayWinner = document.getElementById("display-winner");
-    
+
     document.addEventListener("DOMContentLoaded", () => dialog.showModal());
     dialog.addEventListener("click", _handleDialog);
     containerBoard.addEventListener("click", _playGame);
@@ -92,13 +92,19 @@ const domAccessModule = (function() {
 
         if (roundCount % 2 == 1 && chosenNumber) {
             playersArr[0].play(+chosenNumber);
+            event.target.innerText = `${playersArr[0].mark}`;
+            event.target.style.backgroundColor = "#85ceff";
             roundCount++;
+
             _checkGameResult(playersArr[0], result);
             return;
         }
         else if (roundCount % 2 == 0 && chosenNumber) {
             playersArr[1].play(+chosenNumber);
+            event.target.innerText = `${playersArr[1].mark}`;
+            event.target.style.backgroundColor = "#85ceff";
             roundCount++;
+
             _checkGameResult(playersArr[1], result);
             return;
         }
@@ -106,20 +112,30 @@ const domAccessModule = (function() {
 
     function _checkGameResult(obj, res) {
         if (res == "winRound") {
-            _reset();
+            _resetResRoundChoices();
 
             obj.points++;
-            if (obj.points < 5) { displayWinner.innerText = `${obj.name} has won the round!`; }
+            if (obj.points < 5) { 
+                displayWinner.innerText = `${obj.name} has won the round!`; 
+            }
             else if (obj.points == 5) { 
                 displayWinner.innerText = `${obj.name} has won the game!`;
             };
             _renderPlayersInfo();
         }
         else if (res == "stalemateRound") {
-            _reset();
+            _resetResRoundChoices();
             displayWinner.innerText = `Round ended in stalemate.`;
             _renderPlayersInfo();
         }
+    }
+
+    function _resetResRoundChoices() {
+        result = "";
+        roundCount = 1;
+        playersArr.forEach((player) => {
+            player.choices = [];
+        });
     }
 
     function _renderPlayersInfo() {
@@ -131,14 +147,6 @@ const domAccessModule = (function() {
         statusSecondScore.innerText = `Score: ${playersArr[1].points}`;
         statusSecondMark.innerText = `Mark: ${playersArr[1].mark}`;
     };
-
-    function _reset() {
-        result = "";
-        roundCount = 1;
-        playersArr.forEach((player) => {
-            player.choices = [];
-        });
-    }
 
     function updateResult(newResult) {
         result = newResult;

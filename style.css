@@ -12,6 +12,9 @@
     --hover-color: #85ceff;
     --backdrop-bg: #a8a29e;
     --header-bg:  #bf8c8c;
+    --dark-bg: #004c4c;
+
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     
     background-color: var(--primary-bg);
     color: var(--text-color);
@@ -26,6 +29,7 @@
     margin-bottom: 20px;
     color: inherit;
     background-color: var(--header-bg);
+    box-shadow: var(--shadow);
 }
 
 .header-flex p:first-child {
@@ -51,7 +55,7 @@
     cursor: pointer;
     height: 0px;
     font-size: 2.5rem;
-    color: #004c4c;
+    color: var(--dark-bg);
 }
 
 .play-again-button:hover {
@@ -69,11 +73,18 @@
     gap: 10px;
     color: inherit;
     font-size: 2rem;
+    background-color: var(--hover-color);
+    height: 200px;
+    width: 220px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 15px 0px 0px 15px;
 }
 
 #first-player-name,
 #second-player-name {
     font-size: 2.5rem;
+    font-weight: bold;
 }
 
 .unclickable {
@@ -89,6 +100,7 @@
     grid-template-rows: repeat(3, 1fr);
     background-color: var(--secondary-bg);
     place-items: center;
+    box-shadow: var(--shadow);
 }
 
 .board-container-grid > div {

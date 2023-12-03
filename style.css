@@ -5,11 +5,11 @@
 }
 
 :root, ::backdrop {
-    --primary-bg: #F5F5F5;    /* Light gray for the background */
-    --secondary-bg: #FFFFFF;  /* White for content areas */
-    --accent-color: #2c85c0;  /* Blue accent color */
-    --text-color: #333333;    /* Dark gray for text */
-    --hover-color: #85ceff;   /* Red for hover effects */
+    --primary-bg: #F5F5F5;
+    --secondary-bg: #FFFFFF;
+    --accent-color: #2c85c0;
+    --text-color: #333333;
+    --hover-color: #85ceff;
     --backdrop-bg: #a8a29e;
     --header-bg:  #bf8c8c;
     
@@ -39,6 +39,23 @@
 #display-winner {
     min-height: 50px;
     font-weight: bold;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.play-again-button {
+    border: none;
+    background-color: none;
+    font-weight: bold;
+    cursor: pointer;
+    height: 0px;
+    font-size: 2.5rem;
+    color: #004c4c;
+}
+
+.play-again-button:hover {
+    text-decoration: underline;
 }
 
 .main-container {
@@ -141,8 +158,16 @@ form p span {
     font-size: 3rem;
 }
 
+form div {
+    align-self: center;
+    margin-bottom: 50px;
+    display: flex;
+    gap: 20px;
+}
+
 form button {
     border: 0.5px solid black;
+    height: 40px;
     border-radius: 10px;
     padding:5px 10px;
     font-size: 1.5rem;

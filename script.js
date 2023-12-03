@@ -140,6 +140,14 @@ const domAccessModule = (function() {
             else if (obj.points == 5) {
                 _renderPlayersInfo();
                 displayWinner.innerText = `${obj.name} has won the game!`;
+
+                let playAgainBtn = document.createElement("button");
+                playAgainBtn.classList.add("play-again-button");
+                playAgainBtn.innerText = "Play again?";
+                displayWinner.appendChild(playAgainBtn);
+
+                playAgainBtn.addEventListener("click", () => window.location.reload());
+
                 containerBoard.classList.add("unclickable");
             };
         }
